@@ -30,9 +30,15 @@ pipeline {
         
         stage('Code Quality Analysis') {
             steps {
-                script {
-                   // Install ESLint
+               
                     sh 'npm run lint'
+            }
+            post {
+                always {
+                    emailext attachmentsPattern: 'lint.log',
+                    to: 'kavinduisiwara@gmail.com', 
+                    subject: "Quality Check", 
+                    body: "See attached log for details."
                 }
             }
         }
