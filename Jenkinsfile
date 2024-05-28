@@ -4,7 +4,6 @@ pipeline {
     environment {
         NODEJS_HOME = tool name: 'NodeJS_12'
         PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
-        CODECLIMATE_REPO_TOKEN = credentials('codeclimate-repo-token')
     }
     
     stages {
@@ -32,14 +31,11 @@ pipeline {
         stage('Code Quality Analysis') {
             steps {
                 script {
-                  // Install CodeClimate test reporter
-                    sh 'npm install --save-dev codeclimate-test-reporter'
+                   // Install ESLint
+                    sh 'npm install --save-dev eslint eslint-plugin-react'
 
-                    // Run tests with coverage and output coverage report to console
-                    sh './node_modules/.bin/codeclimate-test-reporter coverage -t simplecov'
-
-                    // Upload coverage report to CodeClimate
-                    sh './node_modules/.bin/codeclimate-test-reporter upload-coverage --input ./coverage/lcov.info --token=${params.CODECLIMATE_TOKEN}'
+                    // Run ESLint
+                    sh './node_modules/.bin/eslint .'
                 }
             }
         }
