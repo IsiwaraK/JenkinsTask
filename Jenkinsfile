@@ -2,9 +2,10 @@ pipeline {
     agent any
     
     environment {
-        NODEJS_HOME = tool name: 'NodeJS_12', type: 'NodeJSInstallation'
-        PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
+        NODEJS_HOME = tool name: 'NodeJS_12'
+        PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"        
         CODECLIMATE_REPO_TOKEN = credentials('codeclimate-repo-token') // Store your CodeClimate repo token in Jenkins credentials
+
     }
     
     stages {
