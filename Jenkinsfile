@@ -32,10 +32,7 @@ pipeline {
             steps {
                 script {
                    // Install ESLint
-                    sh 'npm install --save-dev eslint eslint-plugin-react'
-
-                    // Run ESLint
-                    sh './node_modules/.bin/eslint .'
+                    sh 'npm run lint'
                 }
             }
         }
