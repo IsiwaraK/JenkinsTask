@@ -4,6 +4,7 @@ pipeline {
     environment {
         NODEJS_HOME = tool name: 'NodeJS_12'
         PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
+        CODECLIMATE_REPO_TOKEN = credentials('codeclimate-repo-token')
     }
     
     stages {
@@ -31,13 +32,14 @@ pipeline {
         stage('Code Quality Analysis') {
             steps {
                 script {
-                    echo 'Running code quality analysis...'
-                   sh '''
-                        npm install -g codeclimate-test-reporter
-                        cc-test-reporter before-build
-                        npm test -- --coverage
-                        cc-test-reporter after-build --exit-code $?
-                    '''
+                    // Prepare CodeClimate test reporter
+                    sh './node_modules/.bin/codeclimate-test-reporter before-build'
+
+                    // Run tests with coverage
+                    sh 'npm test -- --coverage'
+
+                    // Upload coverage report to CodeClimate
+                    sh './node_modules/.bin/codeclimate-test-reporter after-build --exit-code $?'
                 }
             }
         }
