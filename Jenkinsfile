@@ -3,31 +3,36 @@ pipeline {
     
     environment {
         NODEJS_HOME = tool name: 'NodeJS_12'
-        PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"        
-        CODECLIMATE_REPO_TOKEN = credentials('codeclimate-repo-token') // Store your CodeClimate repo token in Jenkins credentials
-
+        PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
     }
     
     stages {
         stage('Build') {
             steps {
                 script {
+                    echo 'Building the React application...'
                     sh 'npm install'
                     sh 'npm run build'
                 }
             }
+
         }
+        
         stage('Test') {
             steps {
                 script {
+                    echo 'Running tests...'
                     sh 'npm test -- --coverage'
                 }
             }
+
         }
+        
         stage('Code Quality Analysis') {
             steps {
                 script {
-                    sh '''
+                    echo 'Running code quality analysis...'
+                   sh '''
                         npm install -g codeclimate-test-reporter
                         cc-test-reporter before-build
                         npm test -- --coverage
@@ -36,27 +41,23 @@ pipeline {
                 }
             }
         }
+        
         stage('Deploy') {
             steps {
                 script {
-                    echo 'Deploy stage - no actions performed'
+                    echo 'Deploying the application...'
+                    // Deployment logic here
                 }
             }
         }
+        
         stage('Release') {
             steps {
                 script {
-                    echo 'Release stage - no actions performed'
+                    echo 'Releasing the application...'
+                    // Release logic here
                 }
             }
-        }
-    }
-    post {
-        success {
-            echo 'Pipeline completed successfully.'
-        }
-        failure {
-            echo 'Pipeline failed.'
         }
     }
 }
