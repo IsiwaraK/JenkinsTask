@@ -32,15 +32,14 @@ pipeline {
         stage('Code Quality Analysis') {
             steps {
                 script {
-                   // Install CodeClimate test reporter
+                  // Install CodeClimate test reporter
                     sh 'npm install --save-dev codeclimate-test-reporter'
 
                     // Run tests with coverage and output coverage report to console
                     sh './node_modules/.bin/codeclimate-test-reporter coverage -t simplecov'
 
                     // Upload coverage report to CodeClimate
-                    sh './node_modules/.bin/codeclimate-test-reporter upload-coverage --input ./coverage/lcov.info --token=${params.CODECLIMATE_REPO_TOKEN}'
-                }
+                    sh './node_modules/.bin/codeclimate-test-reporter upload-coverage --input ./coverage/lcov.info --token=${params.CODECLIMATE_TOKEN}'
                 }
             }
         }
